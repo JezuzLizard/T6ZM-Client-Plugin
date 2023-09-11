@@ -59,25 +59,7 @@
 
 using namespace std::literals;
 
-namespace config
-{
-	namespace components
-	{
-		__declspec(selectany) bool chat;
-		__declspec(selectany) bool command;
-		__declspec(selectany) bool debug;
-		__declspec(selectany) bool exception;
-		__declspec(selectany) bool gsc;
-		__declspec(selectany) bool io;
-		__declspec(selectany) bool json;
-		__declspec(selectany) bool lui;
-		__declspec(selectany) bool patches;
-		__declspec(selectany) bool scheduler;
-		__declspec(selectany) bool scripting;
-	}
-
-	namespace features
-	{
-
-	}
-}
+//#define NO_COMP_CHAT
+//#define NO_COMP_EXCEPTION
+//#define NO_COMP_LUI
+//#define NO_COMP_PATCHES

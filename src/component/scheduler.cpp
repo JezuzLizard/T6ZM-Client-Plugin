@@ -157,11 +157,6 @@ namespace scheduler
 	public:
 		void post_unpack() override
 		{
-			if (!config::components::scheduler)
-			{
-				return;
-			}
-
 			thread = std::thread([]()
 			{
 				while (true)
@@ -185,3 +180,4 @@ namespace scheduler
 }
 
 REGISTER_COMPONENT(scheduler::component)
+#endif

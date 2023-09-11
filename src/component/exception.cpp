@@ -18,6 +18,7 @@
 
 #include <exception/minidump.hpp>
 
+#ifndef NO_COMP_EXCEPTION
 namespace exception
 {
     namespace
@@ -154,11 +155,6 @@ namespace exception
     public:
         void post_unpack() override
         {
-            if (!config::components::exception)
-            {
-                return;
-            }
-
             scheduler::once([]()
             {
                 SetUnhandledExceptionFilter(exception_filter);
@@ -170,3 +166,4 @@ namespace exception
 }
 
 REGISTER_COMPONENT(exception::component)
+#endif

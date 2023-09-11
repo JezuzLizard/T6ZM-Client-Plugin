@@ -73,11 +73,6 @@ namespace io
 	public:
 		void post_unpack() override
 		{
-			if (!config::components::io)
-			{
-				return;
-			}
-
 			gsc::function::add("isalphanumeric", [](const gsc::function_args& args)->scripting::script_value
 			{
 				auto string = args[0].as<std::string>();

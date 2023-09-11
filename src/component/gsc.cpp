@@ -378,11 +378,6 @@ namespace gsc
     public:
         void post_unpack() override
         {
-            if (!config::components::gsc)
-            {
-                return;
-            }
-
             scr_get_common_function_hook.create(SELECT(0x4B57B0, 0x4AD040), scr_get_common_function);
             player_get_method_hook.create(SELECT(0x432480, 0x6F2DB0), player_get_method);
 

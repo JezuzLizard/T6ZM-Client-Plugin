@@ -210,11 +210,6 @@ namespace json
 	public:
 		void post_unpack() override
 		{
-			if (!config::components::json)
-			{
-				return;
-			}
-
 			gsc::function::add("createmap", [](const gsc::function_args& args)
 			{
 				scripting::array array;

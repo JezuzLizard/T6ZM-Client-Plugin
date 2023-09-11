@@ -125,11 +125,6 @@ namespace command
 	public:
 		void post_unpack() override
 		{
-			if (!config::components::command)
-			{
-				return;
-			}
-
 			scripting::on_shutdown(clear_script_commands);
 
 			command::add("notifylevel", [](command::params& params)

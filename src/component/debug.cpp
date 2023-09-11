@@ -535,11 +535,6 @@ namespace debug
             developer_script = 0;
             scr_max_loop_time = 0;
 
-            if (!config::components::debug)
-            {
-                return;
-            }
-
             utils::hook::jump(SELECT(0x8F8A57, 0x8F77B7), utils::hook::assemble(vm_execute_error_stub));
             //utils::hook::jump(SELECT(0x8F8918, 0x8F7678), utils::hook::assemble(vm_execute_jmp_stub));
 

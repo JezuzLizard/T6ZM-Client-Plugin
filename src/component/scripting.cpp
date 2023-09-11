@@ -278,11 +278,6 @@ namespace scripting
 	public:
 		void post_unpack() override
 		{
-			if (!config::components::scripting)
-			{
-				return;
-			}
-
 			g_shutdown_game_hook.create(SELECT(0x60DCF0, 0x688A40), g_shutdown_game_stub);
 
 			scr_add_class_field_hook.create(SELECT(0x6B7620, 0x438AD0), scr_add_class_field_stub);

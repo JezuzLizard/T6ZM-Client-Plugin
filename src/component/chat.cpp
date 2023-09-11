@@ -9,6 +9,7 @@
 #include <utils/hook.hpp>
 #include <utils/string.hpp>
 
+#ifndef NO_COMP_CHAT
 namespace chat
 {
 	namespace
@@ -148,11 +149,6 @@ namespace chat
 	public:
 		void post_unpack() override
 		{
-			if (!config::components::chat)
-			{
-				return;
-			}
-
 			g_say_hook.create(SELECT(0x6A7A40, 0x493DF0), g_say_stub);
 			sv_get_user_info_hook.create(SELECT(0x68BB90, 0x4C10F0), sv_get_user_info_stub);
 			client_connect_hook.create(SELECT(0x5EF5A0, 0x41BE10), client_connect_stub);
@@ -326,3 +322,4 @@ namespace chat
 }
 
 REGISTER_COMPONENT(chat::component)
+#endif

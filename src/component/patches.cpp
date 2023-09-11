@@ -9,6 +9,7 @@
 #include <utils/hook.hpp>
 #include <utils/string.hpp>
 
+#ifndef NO_COMP_PATCHES
 namespace patches
 {
 	namespace
@@ -89,11 +90,6 @@ namespace patches
 	public:
 		void post_unpack() override
 		{
-			if (!config::components::patches)
-			{
-				return;
-			}
-
 			patch();
 		}
 
@@ -111,3 +107,4 @@ namespace patches
 }
 
 REGISTER_COMPONENT(patches::component)
+#endif

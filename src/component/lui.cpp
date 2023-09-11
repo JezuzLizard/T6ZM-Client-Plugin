@@ -12,6 +12,7 @@
 #include <utils/hook.hpp>
 #include <utils/string.hpp>
 
+#ifndef NO_COMP_LUI
 namespace lui
 {
 	namespace
@@ -77,13 +78,10 @@ namespace lui
 	public:
 		void post_unpack() override
 		{
-			if (!config::components::lui)
-			{
-				return;
-			}
 			//LUI_CoD_GetRawFile_hook.create(0x4A7550, LUI_CoD_GetRawFile_stub);
 		}
 	};
 }
 
 REGISTER_COMPONENT(lui::component)
+#endif

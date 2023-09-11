@@ -12,7 +12,7 @@
 #define DLLEXPORT __declspec(dllexport)
 #define EXPORT EXTERN DLLEXPORT
 
-EXPORT uint64_t CONVENTION PreInit()
+EXPORT uint64_t __cdecl PreInit()
 {
 	component_loader::post_unpack();
 	return 1ull;

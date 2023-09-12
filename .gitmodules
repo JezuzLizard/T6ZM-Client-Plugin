@@ -16,3 +16,6 @@
 [submodule "deps/curl"]
 	path = deps/curl
 	url = https://github.com/curl/curl.git
+[submodule "deps/csv-parser"]
+	path = deps/csv-parser
+	url = https://github.com/AriaFallah/csv-parser

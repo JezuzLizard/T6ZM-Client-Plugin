@@ -3,6 +3,8 @@
 #include "structs.hpp"
 
 #define SELECT(mp, zm) (game::environment::t6mp() ? mp : zm)
+#define ASSIGN(type, mp, sp) reinterpret_cast<type>(SELECT(mp, sp))
+#define CALL_ADDR(mp, sp) ASSIGN(void*, mp, sp)
 
 namespace game
 {
@@ -84,6 +86,9 @@ namespace game
 	scr_entref_t Scr_GetEntityIdRef(unsigned int entId);
 	void Scr_TerminateWaitThread(scriptInstance_t inst, unsigned int localId, unsigned int startLocalId);
 	void Scr_TerminateWaittillThread(scriptInstance_t inst, unsigned int localId, unsigned int startLocalId);
+
+	inline void* DB_LinkXAssetEntry_ADDR() { return CALL_ADDR(0x0, 0x7FCCC0); }
+	XAssetEntry* DB_LinkXAssetEntry(XAssetEntry* newEntry, int allowOverride, void* call_addr = DB_LinkXAssetEntry_ADDR());
 }
 
 #include "symbols.hpp"

@@ -155,4 +155,21 @@ namespace game
 			return true;
 		}
 	}
+
+	// XAssetEntry* __usercall DB_LinkXAssetEntry@<eax>(XAssetEntry* newEntry@<eax>, int allowOverride)
+	XAssetEntry* DB_LinkXAssetEntry(XAssetEntry* newEntry, int allowOverride, void* call_addr)
+	{
+		XAssetEntry* answer;
+
+		__asm
+		{
+			push allowOverride;
+			mov eax, newEntry;
+			call call_addr;
+			add esp, 0x4;
+			mov answer, eax;
+		}
+
+		return answer;
+	}
 }

@@ -12,8 +12,22 @@
 #define DLLEXPORT __declspec(dllexport)
 #define EXPORT EXTERN DLLEXPORT
 
+namespace config
+{
+	char working_directory[1024];
+}
+
 EXPORT uint64_t __cdecl PreInit()
 {
+	const char* path;
+	path = _getcwd(config::working_directory, sizeof(config::working_directory));
+	if (path == NULL)
+	{
+		MessageBoxA(NULL,
+			"Invalid game directory",
+			"ERROR", MB_ICONERROR);
+		exit(-1);
+	}
 	component_loader::post_unpack();
 	return 1ull;
 }

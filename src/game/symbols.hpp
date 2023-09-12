@@ -1,6 +1,7 @@
 #pragma once
 
 #define WEAK __declspec(selectany)
+#define NAKED __declspec(naked)
 
 namespace game
 {
@@ -97,6 +98,9 @@ namespace game
 	WEAK symbol<void*(jmp_buf* Buf, int Value)> longjmp{0xA78870, 0xA71AD0};
 	WEAK symbol<int(jmp_buf* Buf, int a6, int a7, int a9)> _setjmp{0xA77B10, 0xA70D70};
 
+	WEAK symbol<size_t(const char* qpath, void** buffer)>FS_ReadFile{ 0x0, 0x60F610 };
+	WEAK symbol<void(void* buffer)>FS_FreeFile{ 0x0, 0x5A2220 };
+
 	// Variables
 
 	WEAK symbol<int> g_script_error_level{0x2E23BC8, 0x2DF3EC8};
@@ -132,6 +136,8 @@ namespace game
 
 	WEAK symbol<dvar_t*> fs_homepath{0x0, 0x29C1EE4};
 	WEAK symbol<dvar_t*> fs_basegame{0x0, 0x29C0DAC};
+
+	WEAK symbol<DB_LoadData> g_load{ 0x0, 0x129BE00 };
 
 
 	namespace plutonium

@@ -34,6 +34,7 @@
 #include <Psapi.h>
 #include <stdint.h>
 #include <codecvt>
+#include <direct.h>
 
 #ifdef max
 #undef max
@@ -63,3 +64,8 @@ using namespace std::literals;
 //#define NO_COMP_EXCEPTION
 //#define NO_COMP_LUI
 //#define NO_COMP_PATCHES
+
+namespace config
+{
+	extern char working_directory[1024];
+}

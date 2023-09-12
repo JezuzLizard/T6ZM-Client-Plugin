@@ -52,10 +52,20 @@ namespace io
 		}
 	}
 
+	bool first_print = true;
+
 	void print_to_log(std::string text)
 	{
-		const auto path = (*game::fs_homepath)->current.string;
-		utils::io::write_file(utils::string::va("%s/T6ZM-Client-Plugin.log", path), text, true);
+		const auto path = config::working_directory;
+		if (first_print)
+		{
+			utils::io::write_file(utils::string::va("%s/T6ZM-Client-Plugin.log", path), text, false);
+			first_print = false;
+		}
+		else
+		{
+			utils::io::write_file(utils::string::va("%s/T6ZM-Client-Plugin.log", path), text, true);
+		}
 	}
 
 	const std::string get_scriptdata_folder()

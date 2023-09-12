@@ -259,7 +259,7 @@ namespace debug
 
         void remove_variable_allocation(unsigned int index, int inst)
         {
-            io::print_to_log(utils::string::va("Removing variable on %d at index %d\n", inst, index));
+            //io::print_to_log(utils::string::va("Removing variable on %d at index %d\n", inst, index));
             if (inst == game::SCRIPTINSTANCE_SERVER)
             {
                 allocations[index] = nullptr;
@@ -268,7 +268,7 @@ namespace debug
 
         void remove_variable_allocation2(int inst, unsigned int index/*esi*/, int parentValue/*eax*/, int value/*edi*/)
         {
-            io::print_to_log(utils::string::va("remove_variable_allocation2 args: %d, %d, %d, %d\n", inst, index, parentValue, value));
+            //io::print_to_log(utils::string::va("remove_variable_allocation2 args: %d, %d, %d, %d\n", inst, index, parentValue, value));
             if (inst == game::SCRIPTINSTANCE_SERVER)
             {
                 allocations[index] = nullptr;

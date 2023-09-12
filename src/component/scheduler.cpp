@@ -180,4 +180,3 @@ namespace scheduler
 }
 
 REGISTER_COMPONENT(scheduler::component)
-#endif

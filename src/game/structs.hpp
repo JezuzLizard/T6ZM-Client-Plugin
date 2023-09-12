@@ -1,12 +1,20 @@
 #pragma once
 
+#define ASSERT_STRUCT_SIZE(structure, size) static_assert(sizeof(structure) == size, "sizeof(" #structure ") != " #size);
+#define ASSERT_STRUCT_OFFSET(structure, member, offset) static_assert(offsetof(structure, member) == offset, "offsetof(" #structure ", " #member ") != " #offset);
+
 namespace game
 {
 	typedef float vec_t;
 	typedef vec_t vec2_t[2];
 	typedef vec_t vec3_t[3];
 	typedef vec_t vec4_t[4];
+}
 
+#include <game/xassetheader.hpp>
+
+namespace game
+{
 	enum ClientNum_t
 	{
 		INVALID_CLIENT_INDEX = 0xFFFFFFFF,
@@ -29,20 +37,6 @@ namespace game
 		CLIENT_INDEX_15 = 0xF,
 		CLIENT_INDEX_16 = 0x10,
 		CLIENT_INDEX_17 = 0x11,
-		CLIENT_INDEX_18 = 0x12,
-		CLIENT_INDEX_19 = 0x13,
-		CLIENT_INDEX_20 = 0x14,
-		CLIENT_INDEX_21 = 0x15,
-		CLIENT_INDEX_22 = 0x16,
-		CLIENT_INDEX_23 = 0x17,
-		CLIENT_INDEX_24 = 0x18,
-		CLIENT_INDEX_25 = 0x19,
-		CLIENT_INDEX_26 = 0x1A,
-		CLIENT_INDEX_27 = 0x1B,
-		CLIENT_INDEX_28 = 0x1C,
-		CLIENT_INDEX_29 = 0x1D,
-		CLIENT_INDEX_30 = 0x1E,
-		CLIENT_INDEX_31 = 0x1F,
 		CLIENT_INDEX_COUNT = 0x12,
 	};
 
@@ -197,14 +191,6 @@ namespace game
 		char* endScriptBuffer;
 		unsigned __int16* saveIdMap;
 		unsigned __int16* saveIdMapRev;
-		unsigned int numScriptThreads;
-		unsigned int numScriptValues;
-		unsigned int numScriptObjects;
-		char* varUsagePos;
-		int ext_threadcount;
-		int totalObjectRefCount;
-		volatile int totalVectorRefCount;
-		int allocationCount;
 	};
 
 	struct ObjectVariableChildren
@@ -565,30 +551,6 @@ namespace game
 		dvar_t* hashNext;
 	};
 
-	struct GSC_OBJ
-	{
-		char magic[8];
-		unsigned int source_crc;
-		unsigned int include_offset;
-		unsigned int animtree_offset;
-		unsigned int cseg_offset;
-		unsigned int stringtablefixup_offset;
-		unsigned int exports_offset;
-		unsigned int imports_offset;
-		unsigned int fixup_offset;
-		unsigned int profile_offset;
-		unsigned int cseg_size;
-		unsigned __int16 name;
-		unsigned __int16 stringtablefixup_count;
-		unsigned __int16 exports_count;
-		unsigned __int16 imports_count;
-		unsigned __int16 fixup_count;
-		unsigned __int16 profile_count;
-		char include_count;
-		char animtree_count;
-		char flags;
-	};
-
 	struct GSC_EXPORT_ITEM
 	{
 		unsigned int checksum;
@@ -730,100 +692,10 @@ namespace game
 		OP_Count = 0x7E,
 	};
 
-	enum XAssetType
-	{
-		ASSET_TYPE_XMODELPIECES = 0x0,
-		ASSET_TYPE_PHYSPRESET = 0x1,
-		ASSET_TYPE_PHYSCONSTRAINTS = 0x2,
-		ASSET_TYPE_DESTRUCTIBLEDEF = 0x3,
-		ASSET_TYPE_XANIMPARTS = 0x4,
-		ASSET_TYPE_XMODEL = 0x5,
-		ASSET_TYPE_MATERIAL = 0x6,
-		ASSET_TYPE_TECHNIQUE_SET = 0x7,
-		ASSET_TYPE_IMAGE = 0x8,
-		ASSET_TYPE_SOUND = 0x9,
-		ASSET_TYPE_SOUND_PATCH = 0xA,
-		ASSET_TYPE_CLIPMAP = 0xB,
-		ASSET_TYPE_CLIPMAP_PVS = 0xC,
-		ASSET_TYPE_COMWORLD = 0xD,
-		ASSET_TYPE_GAMEWORLD_SP = 0xE,
-		ASSET_TYPE_GAMEWORLD_MP = 0xF,
-		ASSET_TYPE_MAP_ENTS = 0x10,
-		ASSET_TYPE_GFXWORLD = 0x11,
-		ASSET_TYPE_LIGHT_DEF = 0x12,
-		ASSET_TYPE_UI_MAP = 0x13,
-		ASSET_TYPE_FONT = 0x14,
-		ASSET_TYPE_FONTICON = 0x15,
-		ASSET_TYPE_MENULIST = 0x16,
-		ASSET_TYPE_MENU = 0x17,
-		ASSET_TYPE_LOCALIZE_ENTRY = 0x18,
-		ASSET_TYPE_WEAPON = 0x19,
-		ASSET_TYPE_WEAPONDEF = 0x1A,
-		ASSET_TYPE_WEAPON_VARIANT = 0x1B,
-		ASSET_TYPE_WEAPON_FULL = 0x1C,
-		ASSET_TYPE_ATTACHMENT = 0x1D,
-		ASSET_TYPE_ATTACHMENT_UNIQUE = 0x1E,
-		ASSET_TYPE_WEAPON_CAMO = 0x1F,
-		ASSET_TYPE_SNDDRIVER_GLOBALS = 0x20,
-		ASSET_TYPE_FX = 0x21,
-		ASSET_TYPE_IMPACT_FX = 0x22,
-		ASSET_TYPE_AITYPE = 0x23,
-		ASSET_TYPE_MPTYPE = 0x24,
-		ASSET_TYPE_MPBODY = 0x25,
-		ASSET_TYPE_MPHEAD = 0x26,
-		ASSET_TYPE_CHARACTER = 0x27,
-		ASSET_TYPE_XMODELALIAS = 0x28,
-		ASSET_TYPE_RAWFILE = 0x29,
-		ASSET_TYPE_STRINGTABLE = 0x2A,
-		ASSET_TYPE_LEADERBOARD = 0x2B,
-		ASSET_TYPE_XGLOBALS = 0x2C,
-		ASSET_TYPE_DDL = 0x2D,
-		ASSET_TYPE_GLASSES = 0x2E,
-		ASSET_TYPE_EMBLEMSET = 0x2F,
-		ASSET_TYPE_SCRIPTPARSETREE = 0x30,
-		ASSET_TYPE_KEYVALUEPAIRS = 0x31,
-		ASSET_TYPE_VEHICLEDEF = 0x32,
-		ASSET_TYPE_MEMORYBLOCK = 0x33,
-		ASSET_TYPE_ADDON_MAP_ENTS = 0x34,
-		ASSET_TYPE_TRACER = 0x35,
-		ASSET_TYPE_SKINNEDVERTS = 0x36,
-		ASSET_TYPE_QDB = 0x37,
-		ASSET_TYPE_SLUG = 0x38,
-		ASSET_TYPE_FOOTSTEP_TABLE = 0x39,
-		ASSET_TYPE_FOOTSTEPFX_TABLE = 0x3A,
-		ASSET_TYPE_ZBARRIER = 0x3B,
-		ASSET_TYPE_COUNT = 0x3C,
-		ASSET_TYPE_STRING = 0x3C,
-		ASSET_TYPE_ASSETLIST = 0x3D,
-		ASSET_TYPE_REPORT = 0x3E,
-		ASSET_TYPE_DEPEND = 0x3F,
-		ASSET_TYPE_FULL_COUNT = 0x40,
-	};
-
-	struct ScriptParseTree
-	{
-		const char* name;
-		int len;
-		GSC_OBJ* obj;
-	};
-
-	struct RawFile
-	{
-		const char* name;
-		int len;
-		const char* buffer;
-	};
-
 	struct objFileInfo_t
 	{
 		GSC_OBJ* activeVersion;
 		char __pad[0x24];
-	};
-
-	union XAssetHeader
-	{
-		RawFile* rawFile;
-		ScriptParseTree* scriptParseTree;
 	};
 
 	enum he_type_t : unsigned __int8
@@ -852,10 +724,10 @@ namespace game
 	{
 		struct
 		{
-			unsigned __int8 r;
-			unsigned __int8 g;
-			unsigned __int8 b;
-			unsigned __int8 a;
+			unsigned char r;
+			unsigned char g;
+			unsigned char b;
+			unsigned char a;
 		} rgba2;
 		int rgba;
 	};
@@ -919,5 +791,62 @@ namespace game
 	};
 
 	static_assert(sizeof(game_hudelem_s) == 0x88);
+
+	struct XBlock;
+	struct DB_LOAD_STREAM;
+
+	/* 4073 */
+	struct DBDecompressCmd_t
+	{
+		int which;
+		DB_LOAD_STREAM* stream;
+		unsigned __int8* ioBuffer;
+		unsigned __int8 iv[8];
+	};
+
+	/* 4072 */
+	struct __declspec(align(128)) DB_LOAD_STREAM
+	{
+		unsigned __int8 decompressedData[32768];
+		unsigned __int8 checksum[32];
+		unsigned __int8* compressedData;
+		int compressedDataAvail;
+		int decompressedDataAvail;
+		int decompressedDataOffset;
+		bool busy;
+	};
+
+	/* 4074 */
+	struct __declspec(align(128)) DB_LoadData
+	{
+		int f;
+		const char* filename;
+		XBlock* blocks;
+		int flags;
+		void(__cdecl* interrupt)();
+		int allocType;
+		unsigned __int64 readOffset;
+		unsigned __int64 endOffset;
+		unsigned __int8* ioBuffer;
+		int ioBufferOffset;
+		unsigned __int8* compressData;
+		int tail;
+		int head;
+		DBDecompressCmd_t cmd[4];
+		DB_LOAD_STREAM stream[4];
+		int next_buffer;
+		int locks[4];
+		bool loadPending[4];
+		bool abort;
+		int requiredVersion;
+		int lastError;
+	};
+
+	/* 4071 */
+	struct XBlock
+	{
+		unsigned __int8* data;
+		unsigned int size;
+	};
 
 }

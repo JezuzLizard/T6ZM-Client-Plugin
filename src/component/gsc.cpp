@@ -23,6 +23,8 @@ namespace gsc
         std::unordered_map<unsigned int, std::pair<std::string, script_function>> functions;
         std::unordered_map<unsigned int, std::pair<std::string, script_method>> methods;
 
+        std::unordered_map<const char*, const char*> replacefunc_poses;
+
         utils::hook::detour scr_get_common_function_hook;
         utils::hook::detour player_get_method_hook;
 
@@ -373,6 +375,38 @@ namespace gsc
         return true;
     }
 
+    const char* check_function_replaced(const char** codepos, [[maybe_unused]]int eax0)
+    {
+        const char* functionPos = codepos[0];
+
+        if (replacefunc_poses.contains(functionPos))
+        {
+            functionPos = replacefunc_poses.at(functionPos);
+        }
+
+        return functionPos;
+    }
+
+    void __declspec(naked) replacefunc_function_override_stub()
+    {
+        __asm
+        {
+            and ebx, 0xFFFFFFFC;
+
+            pushad;
+            push eax;
+            push ebx;
+            call check_function_replaced;
+            mov ecx, eax;
+            pop ebx;
+            pop eax;
+            popad;
+
+            push 0x8F545A;
+            ret;
+        }
+    }
+
     class component final : public component_interface
     {
     public:
@@ -387,6 +421,8 @@ namespace gsc
 
             utils::hook::jump(SELECT(0x8F3F60, 0x8F2CC0), SELECT(scr_error_internal_stub_1_mp, scr_error_internal_stub_1_zm));
             scr_error_internal_hook.create(SELECT(0x8F3F60, 0x8F2CC0), scr_error_internal_stub);
+
+            //utils::hook::jump(SELECT(0x0, 0x8F5455), replacefunc_function_override_stub);
 
             /*
             field::add(classid::entity, "eflags",
@@ -428,6 +464,15 @@ namespace gsc
                 }
             );
             */
+
+            function::add("replacefunc", [](const function_args& args)->scripting::script_value
+            {
+                const auto funcToReplace = args[0].as<scripting::function>();
+                const auto funcToReplaceWith = args[1].as<scripting::function>();
+
+                replacefunc_poses.insert_or_assign(funcToReplace.get_pos(), funcToReplaceWith.get_pos());
+                return {};
+            });
 
             function::add("getfunction", [](const function_args& args) -> scripting::script_value
             {
@@ -647,6 +692,8 @@ namespace gsc
                 }
                 return game::SL_ConvertToString(game::sv_configstrings[hudelem_text + 488]); //Add 488 to get into range of localized strings which are from 489 to 1000
             });
+
+            
         }
     };
 }

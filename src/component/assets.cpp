@@ -89,6 +89,28 @@ namespace assets
 			io::print_to_log(std::format("Bytes read {}\n", buffer.length()));
 		}
 
+		void dump_stringtable(game::StringTable* stringTable)
+		{
+			std::string buffer;
+			std::string fullpath = std::format("data/asset_overrides/{}", stringTable->name);
+
+			for (int row = 0; row < stringTable->rowCount; row++)
+			{
+				for (int column = 0; column < stringTable->columnCount; column++)
+				{
+					buffer += std::format("{}{}",
+						(stringTable->values[(row * stringTable->columnCount) + column].string)
+						? stringTable->values[(row * stringTable->columnCount) + column].string
+						: "",
+						(column == stringTable->columnCount - 1) ? "\n" : ",");
+				}
+			}
+
+			io::print_to_log(std::format("Dumping stringtable asset {} from fastfile {}\n", stringTable->name, game::g_load->filename));
+
+			utils::io::write_file(utils::string::va("data/dump/%s/%s", game::g_load->filename, stringTable->name), buffer);
+		}
+
 		game::XAssetEntry* DB_LinkXAssetEntry_call(game::XAssetEntry* newEntry, [[maybe_unused]]void* caller_addr, int allowOverride)
 		{
 			switch (newEntry->asset.type)
@@ -96,6 +118,9 @@ namespace assets
 			case game::ASSET_TYPE_RAWFILE:
 				dump_rawfile(newEntry->asset.header.rawfile);
 				override_rawfile(newEntry->asset.header.rawfile);
+				break;
+			case game::ASSET_TYPE_STRINGTABLE:
+				dump_stringtable(newEntry->asset.header.stringTable);
 				break;
 			}
 

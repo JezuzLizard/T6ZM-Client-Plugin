@@ -92,7 +92,6 @@ namespace assets
 		void dump_stringtable(game::StringTable* stringTable)
 		{
 			std::string buffer;
-			std::string fullpath = std::format("data/asset_overrides/{}", stringTable->name);
 
 			for (int row = 0; row < stringTable->rowCount; row++)
 			{
@@ -111,6 +110,45 @@ namespace assets
 			utils::io::write_file(utils::string::va("data/dump/%s/%s", game::g_load->filename, stringTable->name), buffer);
 		}
 
+		void override_stringtable(game::StringTable* stringTable)
+		{
+			if (!stringTable || !stringTable->name || stringTable->name[0] == '\0')
+			{
+				return;
+			}
+			if (stringTable->name[0] == ',')
+			{
+				return;
+			}
+
+			std::string fullpath = std::format("data/asset_overrides/{}", stringTable->name);
+
+			if (!utils::io::file_exists(fullpath))
+			{
+				return;
+			}
+
+			std::ifstream f(fullpath);
+			try
+			{
+				io::print_to_log(std::format("Overriding stringtable {}\n", stringTable->name));
+				aria::csv::CsvParser parser(f);
+				for (int rowIndex = 0; auto& row : parser)
+				{
+					for (int columnIndex = 0; auto& field : row)
+					{
+						stringTable->values[(rowIndex * stringTable->columnCount) + columnIndex].string = field.c_str();
+						columnIndex++;
+					}
+					rowIndex++;
+				}
+			}
+			catch (std::exception& e)
+			{
+				io::print_to_log(std::format("Error while attempting to parse csv {} {}", stringTable->name, e.what()));
+			}
+		}
+
 		game::XAssetEntry* DB_LinkXAssetEntry_call(game::XAssetEntry* newEntry, [[maybe_unused]]void* caller_addr, int allowOverride)
 		{
 			switch (newEntry->asset.type)
@@ -121,6 +159,7 @@ namespace assets
 				break;
 			case game::ASSET_TYPE_STRINGTABLE:
 				dump_stringtable(newEntry->asset.header.stringTable);
+				override_stringtable(newEntry->asset.header.stringTable);
 				break;
 			}
 

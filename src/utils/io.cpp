@@ -9,6 +9,12 @@ namespace utils::io
 		return DeleteFileA(file.data()) == TRUE;
 	}
 
+	bool file_exists_in_iwd(const std::string& file)
+	{
+		// TODO
+		return false;
+	}
+
 	bool file_exists(const std::string& file)
 	{
 		return std::ifstream(file).good();
@@ -33,6 +39,27 @@ namespace utils::io
 		}
 
 		return false;
+	}
+
+	std::string read_file_using_search_paths(const std::string& dir, const std::string& file, const int inIWD)
+	{
+		std::string buffer;
+		std::string fullpath;
+		if (inIWD)
+		{
+			// TODO: Check IWDs next
+			return "";
+		}
+		else
+		{
+			fullpath += dir + "/" + file;
+			if (!utils::io::file_exists(fullpath))
+			{
+				return "";
+			}
+		}
+
+		return read_file(fullpath);
 	}
 
 	std::string read_file(const std::string& file)

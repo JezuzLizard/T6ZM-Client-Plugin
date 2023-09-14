@@ -100,6 +100,7 @@ namespace game
 
 	WEAK symbol<size_t(const char* qpath, void** buffer)>FS_ReadFile{ 0x0, 0x60F610 };
 	WEAK symbol<void(void* buffer)>FS_FreeFile{ 0x0, 0x5A2220 };
+	WEAK symbol<void(XAsset* asset)>DB_GetXAssetName{ 0x0, 0x534520 };
 
 	// Variables
 

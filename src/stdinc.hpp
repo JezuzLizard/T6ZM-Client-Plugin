@@ -59,6 +59,9 @@
 #pragma comment(lib, "iphlpapi.lib")
 #pragma comment(lib, "Crypt32.lib")
 
+#define ARRAY_COUNT(arrayn) \
+	((sizeof(arrayn)) / (sizeof(arrayn[0]))) \
+
 using namespace std::literals;
 
 //#define NO_COMP_CHAT

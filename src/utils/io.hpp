@@ -7,9 +7,11 @@
 namespace utils::io
 {
 	bool remove_file(const std::string& file);
+	bool file_exists_in_iwd(const std::string& file);
 	bool file_exists(const std::string& file);
 	bool write_file(const std::string& file, const std::string& data, bool append = false);
 	bool read_file(const std::string& file, std::string* data);
+	std::string read_file_using_search_paths(const std::string& dir, const std::string& file, const int inIWD);
 	std::string read_file(const std::string& file);
 	size_t file_size(const std::string& file);
 	bool create_directory(const std::string& directory);

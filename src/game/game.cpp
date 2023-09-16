@@ -156,6 +156,12 @@ namespace game
 		}
 	}
 
+	void to_json(nlohmann::json& j, const Bounds& v)
+	{
+		QUICK_TO_JSON_FIELD(j, v, midPoint);
+		QUICK_TO_JSON_FIELD(j, v, halfSize);
+	}
+
 	// XAssetEntry* __usercall DB_LinkXAssetEntry@<eax>(XAssetEntry* newEntry@<eax>, int allowOverride)
 	XAssetEntry* DB_LinkXAssetEntry(XAssetEntry* newEntry, int allowOverride, void* call_addr)
 	{

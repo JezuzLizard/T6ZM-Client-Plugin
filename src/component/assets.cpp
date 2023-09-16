@@ -40,16 +40,16 @@ namespace Assets
 
 			return game::DB_LinkXAssetEntry(newEntry, allowOverride, DB_LinkXAssetEntry_original);
 		}
-	}
 
-	NAKED void DB_LinkXAssetEntry_stub()
-	{
-		__asm
+		NAKED void DB_LinkXAssetEntry_stub()
 		{
-			push eax;
-			call DB_LinkXAssetEntry_call;
-			add esp, 0x4;
-			ret;
+			__asm
+			{
+				push eax;
+				call DB_LinkXAssetEntry_call;
+				add esp, 0x4;
+				ret;
+			}
 		}
 	}
 
